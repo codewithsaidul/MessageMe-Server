@@ -1,6 +1,7 @@
 const express = require("express"); // web framework for Node.js
 const morgan = require("morgan"); // HTTP request logger middleware for node.js
 const cors = require("cors"); /* CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS with various options.*/
+const routes = require("./routes/index")
 
 
 
@@ -44,7 +45,7 @@ const limiter = rateLimit({
   message: "Too many Requests from this IP, please try again in an hour!",
 });
 
-app.use("/messageMe", limiter);
+
 
 app.use(
   express.urlencoded({
@@ -55,5 +56,13 @@ app.use(
 app.use(mongoSanitize());
 
 // app.use(xss());
+
+
+app.use("/messageMe", limiter);
+
+
+app.use(routes)
+
+
 
 module.exports = app;
