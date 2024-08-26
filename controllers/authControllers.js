@@ -7,6 +7,8 @@ const filterObj = require("../utils/filterObj");
 const { promisify } = require("util");
 // const catchAsync = require("../utils/catchAsync");
 const mailService = require("../services/mailer");
+const resetPassword = require("../Template/Mailer/resetPassword");
+const otp = require("../Template/Mailer/otp");
 
 // this function will return you jwt token
 const signToken = (userId) => jwt.sign({ userId }, process.env.JWT_SECRET);
@@ -79,10 +81,10 @@ exports.sendOTP = async (req, res, next) => {
 
   // TODO send mail
   mailService.sendEmail({
-    from: "codewithsaidul@gmail.com",
+    from: "saidulislamr333@gmail.com",
     to: user.email,
     subject: "Verification OTP",
-    html: user.firstName, new_otp,
+    html: otp(user.firstName, new_otp),
     attachments: [],
   });
 
@@ -259,10 +261,10 @@ exports.forgotPassword = async (req, res, next) => {
 
     // TODO Send Email
     mailService.sendEmail({
-      from: "shreyanshshah242@gmail.com",
+      from: "saidulislamr333@gmail.com",
       to: user.email,
       subject: "Reset Password",
-      html: user.firstName, resetURL,
+      html: resetPassword(user.firstName, resetURL),
       attachments: [],
     });
 
