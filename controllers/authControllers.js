@@ -77,11 +77,11 @@ exports.sendOTP = async (req, res, next) => {
   });
 
   // user.otp = new_otp.toString();
-  console.log(new_otp)
 
   // TODO send mail
   mailService.sendEmail({
     from: "saidulislamr333@gmail.com",
+    sender: "MessageMe Team",
     to: user.email,
     subject: "Verification OTP",
     html: otp(user.firstName, new_otp),
@@ -212,7 +212,6 @@ exports.protect = async (req, res, next) => {
   // 2) Verification of token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-  console.log(decoded);
 
   // 3) Check if user still exists
 
@@ -242,7 +241,7 @@ exports.forgotPassword = async (req, res, next) => {
   if (!user) {
     return res.status(404).json({
       status: "error",
-      message: "There is no user with email address.",
+      message: "There is no user with this email address.",
     });
   }
 
@@ -250,18 +249,19 @@ exports.forgotPassword = async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  console.log(resetToken)
 
   // 3) Send it to user's email
   try {
-    const resetURL = `http://localhost:3000/auth/new-password?token=${resetToken}`;
-    // TODO => Send Email with this Reset URL to user's email address
 
-    console.log(resetURL);
+    // ============================= Reset Email ==============================
+    // TODO => Send Email with this Reset URL to user's email address
+    const resetURL = `http://localhost:3000/auth/new-password?token=${resetToken}`;
+
 
     // TODO Send Email
     mailService.sendEmail({
       from: "saidulislamr333@gmail.com",
+      sender: "MessageMe Team",
       to: user.email,
       subject: "Reset Password",
       html: resetPassword(user.firstName, resetURL),
@@ -270,7 +270,7 @@ exports.forgotPassword = async (req, res, next) => {
 
     res.status(200).json({
       status: "success",
-      message: "Token sent to email!",
+      message: "Token sent to your email!",
     });
   } catch (err) {
     user.passwordResetToken = undefined;

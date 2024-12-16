@@ -26,6 +26,7 @@
     "node-mailjet": "^6.0.5",
     "nodemon": "^3.1.4",
     "otp-generator": "^4.0.1",
+    "socket.io": "^4.7.5",
     "util": "^0.12.5",
     "uuid": "^10.0.0",
     "xss": "^1.0.15"
